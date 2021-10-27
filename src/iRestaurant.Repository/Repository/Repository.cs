@@ -14,16 +14,13 @@ namespace iRestaurant.Repository.Repository
     {
         public RestaurantContext _context = null;
         public DbSet<T> DbSet = null;
-        public Repository()
-        {
-            this._context = new RestaurantContext();
-            DbSet = _context.Set<T>();
-        }
+
         public Repository(RestaurantContext _context)
         {
             this._context = _context;
             DbSet = _context.Set<T>();
         }
+
         public async Task<IEnumerable<T>> GetAll()
         {
             return await DbSet.ToListAsync();

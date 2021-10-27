@@ -13,9 +13,10 @@ namespace iRestaurant.Repository.Context
 {
     public partial class RestaurantContext : DbContext
     {
-        private IHttpContextAccessor httpContextAccessor;
-        public RestaurantContext()
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public RestaurantContext(IHttpContextAccessor httpContextAccessor)
         {
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public RestaurantContext(DbContextOptions<RestaurantContext> options)
@@ -31,7 +32,7 @@ namespace iRestaurant.Repository.Context
                         e.State == EntityState.Added
                         || e.State == EntityState.Modified));
 
-            var userId = int.Parse(this.httpContextAccessor?.HttpContext?.User.Claims.Where(c => c.Type == "UserId").FirstOrDefault().Value);
+            var userId = int.Parse(_httpContextAccessor?.HttpContext?.User.Claims.Where(c => c.Type == "UserId").FirstOrDefault().Value);
 
             foreach (var entityEntry in entries)
             {

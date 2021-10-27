@@ -1,3 +1,4 @@
+using iRestaurant.Application;
 using iRestaurant.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -27,6 +28,7 @@ namespace iRestaurant.UI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddApplication();
             services.AddRepository(Configuration);
         }
 
