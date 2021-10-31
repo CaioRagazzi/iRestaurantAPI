@@ -24,5 +24,13 @@ namespace iRestaurant.UI.Controllers
 
             return Ok(response);
         }
+
+        [HttpPost("google")]
+        public async Task<IActionResult> GoogleAuth(GoogleAuthDtoRequest googleAuthDtoRequest)
+        {
+            var response = await _authService.GoogleAuth(googleAuthDtoRequest);
+
+            return Ok(response);
+        }
     }
 }

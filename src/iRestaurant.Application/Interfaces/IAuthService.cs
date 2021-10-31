@@ -8,6 +8,7 @@ namespace iRestaurant.Application.Interfaces
 {
     public interface IAuthService
     {
-        Task<bool> Auth(AuthDtoRequest authDtoRequest);
+        Task<string> Auth(AuthDtoRequest authDtoRequest);
+        Task<string> GoogleAuth(GoogleAuthDtoRequest googleAuthDtoRequest);
     }
 }
