@@ -17,6 +17,7 @@ namespace iRestaurant.UI
 {
     public class Startup
     {
+        readonly string MyCors = "_myCors";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -27,7 +28,19 @@ namespace iRestaurant.UI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: MyCors,
+                                  builder =>
+                                  {
+                                      builder
+                                      .AllowAnyHeader()
+                                      .AllowAnyMethod()
+                                      .AllowAnyOrigin();
+                                  });
+            });
             services.AddControllers();
+            services.AddSwaggerGen();
             services.AddApplication();
             services.AddRepository(Configuration);
         }
@@ -40,9 +53,12 @@ namespace iRestaurant.UI
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
+            app.UseSwagger();
+            app.UseSwaggerUI();
 
             app.UseRouting();
+
+            app.UseCors(MyCors);
 
             app.UseAuthorization();
 

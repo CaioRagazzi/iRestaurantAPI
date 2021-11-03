@@ -55,7 +55,7 @@ namespace iRestaurant.Application.Services
                 var newUser = new User()
                 {
                     Email = googleUser.Email,
-                    Name = $"{googleUser.Name} {googleUser.FamilyName}",
+                    Name = $"{googleUser.Name}",
                     Password = "Google Password"
                 };
                 _userRepository.Insert(newUser);

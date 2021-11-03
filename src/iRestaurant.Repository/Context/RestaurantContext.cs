@@ -32,7 +32,9 @@ namespace iRestaurant.Repository.Context
                         e.State == EntityState.Added
                         || e.State == EntityState.Modified));
 
-            var userId = int.Parse(_httpContextAccessor?.HttpContext?.User.Claims.Where(c => c.Type == "UserId").FirstOrDefault().Value);
+            var userInToken = _httpContextAccessor?.HttpContext?.User?.Claims?.Where(c => c.Type == "UserId")?.FirstOrDefault()?.Value;
+
+            var userId = userInToken == null ? 0 : int.Parse(userInToken);
 
             foreach (var entityEntry in entries)
             {
