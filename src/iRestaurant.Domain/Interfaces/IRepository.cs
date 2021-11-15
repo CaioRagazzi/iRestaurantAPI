@@ -8,7 +8,7 @@ namespace iRestaurant.Domain.Interfaces
 {
     public interface IRepository<T> where T : BaseEntity
     {
-        Task<IEnumerable<T>> GetAll();
+        Task<PagedResult<T>> GetAll(int page, int pageSize);
         Task<T> GetById(int id);
         void Insert(T obj);
         void Update(T obj);

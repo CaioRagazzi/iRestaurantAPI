@@ -1,4 +1,5 @@
-﻿using iRestaurant.Application.Dto.User;
+﻿using iRestaurant.Application.Dto;
+using iRestaurant.Application.Dto.User;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,6 +9,7 @@ namespace iRestaurant.Application.Interfaces
 {
     public interface IUserService
     {
-        Task<IEnumerable<UserResponseDto>> GetAll();
+        Task<PagedResultDtoResponse<UserResponseDto>> GetAll(int page, int pageSize);
+        Task Create(UserDtoRequest userDtoRequest);
     }
 }

@@ -14,14 +14,11 @@ namespace iRestaurant.Repository.Context
     public partial class RestaurantContext : DbContext
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
-        public RestaurantContext(IHttpContextAccessor httpContextAccessor)
-        {
-            _httpContextAccessor = httpContextAccessor;
-        }
 
-        public RestaurantContext(DbContextOptions<RestaurantContext> options)
+        public RestaurantContext(DbContextOptions<RestaurantContext> options, IHttpContextAccessor httpContextAccessor)
             : base(options)
         {
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
@@ -69,6 +66,8 @@ namespace iRestaurant.Repository.Context
                 entity.Property(e => e.Id).HasColumnType("int(11)");
 
                 entity.Property(e => e.CreatedBy).HasColumnType("int(11)");
+
+                entity.Property(e => e.TypeAuth).HasColumnType("int(11)");
 
                 entity.Property(e => e.Deleted).HasColumnType("bit(1)");
 

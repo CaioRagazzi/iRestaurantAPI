@@ -1,6 +1,7 @@
 ﻿using iRestaurant.Domain.Interfaces;
 using iRestaurant.Domain.Models;
 using iRestaurant.Repository.Context;
+using iRestaurant.Repository.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -21,9 +22,9 @@ namespace iRestaurant.Repository.Repository
             DbSet = _context.Set<T>();
         }
 
-        public async Task<IEnumerable<T>> GetAll()
+        public async Task<PagedResult<T>> GetAll(int page, int pageSize)
         {
-            return await DbSet.ToListAsync();
+            return await DbSet.AsQueryable().GetPaged(page, pageSize);
         }
         public async Task<T> GetById(int id)
         {

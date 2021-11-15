@@ -1,15 +1,14 @@
-﻿using iRestaurant.Application.Interfaces;
+﻿using iRestaurant.Application.Dto.User;
+using iRestaurant.Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace iRestaurant.UI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -20,11 +19,20 @@ namespace iRestaurant.UI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll(int page, int pageSize)
         {
-            var response = await _userService.GetAll();
+            var response = await _userService.GetAll(page, pageSize);
 
             return Ok(response);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> Create(UserDtoRequest userDtoRequest)
+        {
+            await _userService.Create(userDtoRequest);
+
+            return Ok();
         }
     }
 }

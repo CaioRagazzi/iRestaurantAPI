@@ -2,6 +2,7 @@
 using iRestaurant.Application.Exceptions;
 using iRestaurant.Application.Interfaces;
 using iRestaurant.Domain.Entities;
+using iRestaurant.Domain.Enums;
 using iRestaurant.Domain.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -56,7 +57,8 @@ namespace iRestaurant.Application.Services
                 {
                     Email = googleUser.Email,
                     Name = $"{googleUser.Name}",
-                    Password = "Google Password"
+                    Password = "Google Password",
+                    TypeAuth = (int)UserTypeAuth.GoogleAuth
                 };
                 _userRepository.Insert(newUser);
                 await _userRepository.Save();
