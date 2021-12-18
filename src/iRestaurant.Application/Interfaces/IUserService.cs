@@ -10,6 +10,5 @@ namespace iRestaurant.Application.Interfaces
     public interface IUserService
     {
         Task<PagedResultDtoResponse<UserResponseDto>> GetAll(int page, int pageSize);
-        Task Create(UserDtoRequest userDtoRequest);
     }
 }

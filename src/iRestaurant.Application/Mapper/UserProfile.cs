@@ -15,7 +15,7 @@ namespace iRestaurant.Application.Mapper
         {
             CreateMap<PagedResult<User>, PagedResultDtoResponse<UserResponseDto>>();
             CreateMap<User, UserResponseDto>();
-            CreateMap<UserDtoRequest, User>();
+            CreateMap<UserLoginDtoRequest, User>();
         }
     }
 }

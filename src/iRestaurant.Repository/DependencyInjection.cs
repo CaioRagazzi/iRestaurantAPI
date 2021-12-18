@@ -20,6 +20,8 @@ namespace iRestaurant.Repository
                         b => b.MigrationsAssembly(typeof(RestaurantContext).Assembly.FullName)));
 
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IRestaurantRepository, RestaurantRepository>();
+            services.AddScoped<IFoodCategoryRepository, FoodCategoryRepository>();
 
             return services;
         }

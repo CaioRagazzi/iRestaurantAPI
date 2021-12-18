@@ -6,12 +6,10 @@ using System.Collections.Generic;
 
 namespace iRestaurant.Domain.Entities
 {
-    public partial class User : AuditableEntity
+    public partial class FoodCategory : AuditableEntity
     {
         public string Name { get; set; }
-        public string Email { get; set; }
-        public string Password { get; set; }
-        public int? TypeAuth { get; set; }
+        public string Description { get; set; }
         public int RestaurantId { get; set; }
 
         public virtual Restaurant Restaurant { get; set; }

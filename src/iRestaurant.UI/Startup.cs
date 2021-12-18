@@ -86,6 +86,7 @@ namespace iRestaurant.UI
 
             app.UseCors(MyCors);
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

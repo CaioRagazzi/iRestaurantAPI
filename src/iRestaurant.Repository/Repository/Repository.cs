@@ -22,7 +22,7 @@ namespace iRestaurant.Repository.Repository
             DbSet = _context.Set<T>();
         }
 
-        public async Task<PagedResult<T>> GetAll(int page, int pageSize)
+        public virtual async Task<PagedResult<T>> GetAll(int page, int pageSize)
         {
             return await DbSet.AsQueryable().GetPaged(page, pageSize);
         }

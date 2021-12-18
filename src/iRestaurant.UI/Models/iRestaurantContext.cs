@@ -1,62 +1,34 @@
-﻿using iRestaurant.Domain.Entities;
-using iRestaurant.Domain.Models;
-using Microsoft.AspNetCore.Http;
+﻿using System;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 #nullable disable
 
-namespace iRestaurant.Repository.Context
+namespace iRestaurant.UI.Models
 {
-    public partial class RestaurantContext : DbContext
+    public partial class iRestaurantContext : DbContext
     {
-        private readonly IHttpContextAccessor _httpContextAccessor;
-
-        public RestaurantContext(DbContextOptions<RestaurantContext> options, IHttpContextAccessor httpContextAccessor)
-            : base(options)
+        public iRestaurantContext()
         {
-            _httpContextAccessor = httpContextAccessor;
         }
 
-        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public iRestaurantContext(DbContextOptions<iRestaurantContext> options)
+            : base(options)
         {
-            var entries = ChangeTracker
-                .Entries()
-                .Where(e => e.Entity is AuditableEntity && (
-                        e.State == EntityState.Added
-                        || e.State == EntityState.Modified));
-
-            var userInToken = _httpContextAccessor?.HttpContext?.User?.Claims?.Where(c => c.Type == "UserId")?.FirstOrDefault()?.Value;
-
-            var userId = userInToken == null ? 0 : int.Parse(userInToken);
-
-            foreach (var entityEntry in entries)
-            {
-                if (entityEntry.State == EntityState.Added)
-                {
-                    ((AuditableEntity)entityEntry.Entity).CreatedAt = DateTime.UtcNow;
-                    ((AuditableEntity)entityEntry.Entity).CreatedBy = userId;
-                    ((AuditableEntity)entityEntry.Entity).Deleted = false;
-                }
-                else
-                {
-                    Entry((AuditableEntity)entityEntry.Entity).Property(p => p.CreatedAt).IsModified = false;
-                    Entry((AuditableEntity)entityEntry.Entity).Property(p => p.CreatedBy).IsModified = false;
-                }
-
-                ((AuditableEntity)entityEntry.Entity).ModifiedAt = DateTime.UtcNow;
-                ((AuditableEntity)entityEntry.Entity).ModifiedBy = userId;
-            }
-
-            return await base.SaveChangesAsync(cancellationToken);
         }
 
         public virtual DbSet<FoodCategory> FoodCategories { get; set; }
         public virtual DbSet<Restaurant> Restaurants { get; set; }
         public virtual DbSet<User> Users { get; set; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseMySQL("Server=database-1.c67n9jn84ktw.us-east-2.rds.amazonaws.com;Database=iRestaurant;Uid=admin;Pwd=caiocaio123!@#;");
+            }
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -77,8 +49,6 @@ namespace iRestaurant.Repository.Context
                 entity.Property(e => e.Name).HasMaxLength(20);
 
                 entity.Property(e => e.RestaurantId).HasColumnType("int(11)");
-
-                entity.HasQueryFilter(p => !p.Deleted);
 
                 entity.HasOne(d => d.Restaurant)
                     .WithMany(p => p.FoodCategories)

@@ -25,14 +25,5 @@ namespace iRestaurant.UI.Controllers
 
             return Ok(response);
         }
-
-        [HttpPost]
-        [AllowAnonymous]
-        public async Task<IActionResult> Create(UserDtoRequest userDtoRequest)
-        {
-            await _userService.Create(userDtoRequest);
-
-            return Ok();
-        }
     }
 }
