@@ -6,18 +6,18 @@ using System.Collections.Generic;
 
 namespace iRestaurant.Domain.Entities
 {
-    public partial class FoodCategory : AuditableEntity
+    public partial class FoodIngredient : AuditableEntity
     {
-        public FoodCategory()
+        public FoodIngredient()
         {
-            Menus = new HashSet<Menu>();
+            MenuIngredients = new HashSet<MenuIngredient>();
         }
-
         public string Name { get; set; }
         public string Description { get; set; }
+        public string Unit { get; set; }
         public int RestaurantId { get; set; }
 
         public virtual Restaurant Restaurant { get; set; }
-        public virtual ICollection<Menu> Menus { get; set; }
+        public virtual ICollection<MenuIngredient> MenuIngredients { get; set; }
     }
 }

@@ -26,7 +26,7 @@ namespace iRestaurant.Repository.Repository
         {
             return await DbSet.AsQueryable().GetPaged(page, pageSize);
         }
-        public async Task<T> GetById(int id)
+        public virtual async Task<T> GetById(int id)
         {
             return await DbSet.FindAsync(id);
         }

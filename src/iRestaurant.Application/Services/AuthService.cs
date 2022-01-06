@@ -83,7 +83,7 @@ namespace iRestaurant.Application.Services
                     new Claim("UserId", user.Id.ToString()),
                     new Claim("RestaurantId", user.RestaurantId.ToString())
                 }),
-                Expires = DateTime.UtcNow.AddHours(48),
+                Expires = DateTime.Now.AddMonths(48),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);

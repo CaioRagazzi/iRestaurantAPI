@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace iRestaurant.UI.Models
+namespace iRestaurant.UI.model
 {
     public partial class User
     {

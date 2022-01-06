@@ -3,13 +3,16 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace iRestaurant.UI.Models
+namespace iRestaurant.UI.model
 {
     public partial class Restaurant
     {
         public Restaurant()
         {
             FoodCategories = new HashSet<FoodCategory>();
+            FoodIngredients = new HashSet<FoodIngredient>();
+            MenuIngredients = new HashSet<MenuIngredient>();
+            Menus = new HashSet<Menu>();
             Users = new HashSet<User>();
         }
 
@@ -23,6 +26,9 @@ namespace iRestaurant.UI.Models
         public bool Deleted { get; set; }
 
         public virtual ICollection<FoodCategory> FoodCategories { get; set; }
+        public virtual ICollection<FoodIngredient> FoodIngredients { get; set; }
+        public virtual ICollection<MenuIngredient> MenuIngredients { get; set; }
+        public virtual ICollection<Menu> Menus { get; set; }
         public virtual ICollection<User> Users { get; set; }
     }
 }
