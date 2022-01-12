@@ -32,7 +32,9 @@ namespace iRestaurant.Repository.Repository
         {
             var result = await _restaurantContext.Menus
                 .Where(r => r.RestaurantId == restaurantId)
-                .Include(r => r.MenuIngredients)
+                .Include(r => r.MenuIngredients).ThenInclude(r => r.Ingredient)
+                .Include(r => r.Category)
+                .OrderBy(r => r.Id)
                 .GetPaged(page, pageSize);
 
             return result;

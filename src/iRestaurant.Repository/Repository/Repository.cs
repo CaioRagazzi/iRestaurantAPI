@@ -45,6 +45,12 @@ namespace iRestaurant.Repository.Repository
             existing.Deleted = true;
             await Save();
         }
+
+        public void RemoveCompletelly(T obj)
+        {
+            DbSet.Remove(obj);
+        }
+
         public async Task Save()
         {
             await _context.SaveChangesAsync();

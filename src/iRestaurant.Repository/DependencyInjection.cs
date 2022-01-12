@@ -25,6 +25,8 @@ namespace iRestaurant.Repository
             services.AddScoped<IFoodIngredientRepository, FoodIngredientRepository>();
             services.AddScoped<IMenuRepository, MenuRepository>();
             services.AddScoped<IMenuIngredientRepository, MenuIngredientRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<IOrderMenuRepository, OrderMenuRepository>();
 
             return services;
         }

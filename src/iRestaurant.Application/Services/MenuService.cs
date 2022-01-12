@@ -33,15 +33,16 @@ namespace iRestaurant.Application.Services
             _menuRepository.Insert(menu);
             await _menuRepository.Save();
 
-            menuDtoRequest.FoodIngredientIds.ToList().ForEach(foodIngredientId =>
+            menuDtoRequest.MenuIngredients.ToList().ForEach(menuIngredient =>
             {
-                var menuIngredient = new MenuIngredient
+                var menuIngredientToAdd = new MenuIngredient
                 {
                     MenuId = menu.Id,
                     RestaurantId = restaurantId,
-                    IngredientId = foodIngredientId
+                    IngredientId = menuIngredient.IngredientId,
+                    Quantity = menuIngredient.Quantity
                 };
-                _menuIngredientRepository.Insert(menuIngredient);
+                _menuIngredientRepository.Insert(menuIngredientToAdd);
             });
 
             await _menuIngredientRepository.Save();
@@ -55,30 +56,22 @@ namespace iRestaurant.Application.Services
             menu.Description = menuDtoRequest.Description;
             menu.Name = menuDtoRequest.Name;
 
-            menuDtoRequest.FoodIngredientIds.ToList().ForEach(async foodIngredientId =>
+            menu.MenuIngredients.ToList().ForEach(menuIng =>
             {
-                var menuIngredient = await _menuIngredientRepository.GetByMenuAndIngredientId(menuId, foodIngredientId);
+                _menuIngredientRepository.RemoveCompletelly(menuIng);
+            });
+            await _menuIngredientRepository.Save();
 
-                if (menuIngredient is null)
-                {
+            menuDtoRequest.MenuIngredients.ToList().ForEach(menuIngredientId =>
+            {
                     var menuIngredientToAdd = new MenuIngredient
                     {
                         MenuId = menu.Id,
                         RestaurantId = menu.RestaurantId,
-                        IngredientId = foodIngredientId
+                        IngredientId = menuIngredientId.IngredientId,
+                        Quantity = menuIngredientId.Quantity
                     };
                     _menuIngredientRepository.Insert(menuIngredientToAdd);
-                }
-            });
-
-            menu.MenuIngredients.ToList().ForEach(async menuIngredient =>
-            {
-                var containsInList = menuDtoRequest.FoodIngredientIds.Contains(menuIngredient.IngredientId);
-
-                if (!containsInList)
-                {
-                    await _menuIngredientRepository.Delete(menuIngredient.Id);
-                }
             });
 
             await _menuIngredientRepository.Save();

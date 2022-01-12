@@ -13,6 +13,8 @@ namespace iRestaurant.UI.model
             FoodIngredients = new HashSet<FoodIngredient>();
             MenuIngredients = new HashSet<MenuIngredient>();
             Menus = new HashSet<Menu>();
+            OrderMenus = new HashSet<OrderMenu>();
+            Orders = new HashSet<Order>();
             Users = new HashSet<User>();
         }
 
@@ -29,6 +31,8 @@ namespace iRestaurant.UI.model
         public virtual ICollection<FoodIngredient> FoodIngredients { get; set; }
         public virtual ICollection<MenuIngredient> MenuIngredients { get; set; }
         public virtual ICollection<Menu> Menus { get; set; }
+        public virtual ICollection<OrderMenu> OrderMenus { get; set; }
+        public virtual ICollection<Order> Orders { get; set; }
         public virtual ICollection<User> Users { get; set; }
     }
 }

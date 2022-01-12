@@ -3,6 +3,7 @@ using iRestaurant.Domain.Interfaces;
 using iRestaurant.Domain.Models;
 using iRestaurant.Repository.Context;
 using iRestaurant.Repository.Extensions;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,18 +12,19 @@ using System.Threading.Tasks;
 
 namespace iRestaurant.Repository.Repository
 {
-    class FoodIngredientRepository : Repository<FoodIngredient>, IFoodIngredientRepository
+    public class OrderRepository : Repository<Order>, IOrderRepository
     {
         private readonly RestaurantContext _restaurantContext;
-        public FoodIngredientRepository(RestaurantContext restaurantContext) : base(restaurantContext)
+        public OrderRepository(RestaurantContext restaurantContext) : base(restaurantContext)
         {
             _restaurantContext = restaurantContext;
         }
 
-        public async Task<PagedResult<FoodIngredient>> GetAllFilteredByRestaurantId(int restaurantId, int page, int pageSize)
+        public async Task<PagedResult<Order>> GetAllFilteredByRestaurantId(int restaurantId, int page, int pageSize)
         {
-            var result = await _restaurantContext.FoodIngredients
+            var result = await _restaurantContext.Orders
                 .Where(r => r.RestaurantId == restaurantId)
+                .Include(r => r.OrderMenus).ThenInclude(r => r.Menu)
                 .OrderBy(r => r.Id)
                 .GetPaged(page, pageSize);
 

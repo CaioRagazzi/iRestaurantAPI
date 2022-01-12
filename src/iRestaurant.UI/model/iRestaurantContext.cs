@@ -21,6 +21,8 @@ namespace iRestaurant.UI.model
         public virtual DbSet<FoodIngredient> FoodIngredients { get; set; }
         public virtual DbSet<Menu> Menus { get; set; }
         public virtual DbSet<MenuIngredient> MenuIngredients { get; set; }
+        public virtual DbSet<Order> Orders { get; set; }
+        public virtual DbSet<OrderMenu> OrderMenus { get; set; }
         public virtual DbSet<Restaurant> Restaurants { get; set; }
         public virtual DbSet<User> Users { get; set; }
 
@@ -162,6 +164,8 @@ namespace iRestaurant.UI.model
 
                 entity.Property(e => e.ModifiedBy).HasColumnType("int(11)");
 
+                entity.Property(e => e.Quantity).HasColumnType("decimal(10,2)");
+
                 entity.Property(e => e.RestaurantId).HasColumnType("int(11)");
 
                 entity.HasOne(d => d.Ingredient)
@@ -181,6 +185,84 @@ namespace iRestaurant.UI.model
                     .HasForeignKey(d => d.RestaurantId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_MenuIngredient_Restaurant");
+            });
+
+            modelBuilder.Entity<Order>(entity =>
+            {
+                entity.ToTable("Order");
+
+                entity.HasIndex(e => e.RestaurantId, "FK_Order_Restaurant");
+
+                entity.Property(e => e.Id).HasColumnType("int(11)");
+
+                entity.Property(e => e.CreatedBy).HasColumnType("int(11)");
+
+                entity.Property(e => e.Deleted)
+                    .IsRequired()
+                    .HasColumnType("bit(1)")
+                    .HasDefaultValueSql("b'0'");
+
+                entity.Property(e => e.Description).HasMaxLength(20);
+
+                entity.Property(e => e.ModifiedBy).HasColumnType("int(11)");
+
+                entity.Property(e => e.RestaurantId).HasColumnType("int(11)");
+
+                entity.HasOne(d => d.Restaurant)
+                    .WithMany(p => p.Orders)
+                    .HasForeignKey(d => d.RestaurantId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Order_Restaurant");
+            });
+
+            modelBuilder.Entity<OrderMenu>(entity =>
+            {
+                entity.ToTable("OrderMenu");
+
+                entity.HasIndex(e => e.MenuId, "FK_OrderMenu_Menu");
+
+                entity.HasIndex(e => e.OrderId, "FK_OrderMenu_Order");
+
+                entity.HasIndex(e => e.RestaurantId, "FK_OrderMenu_Restaurant");
+
+                entity.Property(e => e.Id).HasColumnType("int(11)");
+
+                entity.Property(e => e.AdditionalComment).HasMaxLength(20);
+
+                entity.Property(e => e.CreatedBy).HasColumnType("int(11)");
+
+                entity.Property(e => e.Deleted)
+                    .IsRequired()
+                    .HasColumnType("bit(1)")
+                    .HasDefaultValueSql("b'0'");
+
+                entity.Property(e => e.MenuId).HasColumnType("int(11)");
+
+                entity.Property(e => e.ModifiedBy).HasColumnType("int(11)");
+
+                entity.Property(e => e.OrderId).HasColumnType("int(11)");
+
+                entity.Property(e => e.Quantity).HasColumnType("int(11)");
+
+                entity.Property(e => e.RestaurantId).HasColumnType("int(11)");
+
+                entity.HasOne(d => d.Menu)
+                    .WithMany(p => p.OrderMenus)
+                    .HasForeignKey(d => d.MenuId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_OrderMenu_Menu");
+
+                entity.HasOne(d => d.Order)
+                    .WithMany(p => p.OrderMenus)
+                    .HasForeignKey(d => d.OrderId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_OrderMenu_Order");
+
+                entity.HasOne(d => d.Restaurant)
+                    .WithMany(p => p.OrderMenus)
+                    .HasForeignKey(d => d.RestaurantId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_OrderMenu_Restaurant");
             });
 
             modelBuilder.Entity<Restaurant>(entity =>

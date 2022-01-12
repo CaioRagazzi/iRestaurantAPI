@@ -21,6 +21,7 @@ namespace iRestaurant.Repository.Repository
         {
             var result = await _restaurantContext.FoodCategories
                 .Where(r => r.RestaurantId == restaurantId)
+                .OrderBy(r => r.Id)
                 .GetPaged(page, pageSize);
 
             return result;

@@ -20,6 +20,7 @@ namespace iRestaurant.Application
             services.AddScoped<IFoodIngredientService, FoodIngredientService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IMenuService, MenuService>();
+            services.AddScoped<IOrderService, OrderService>();
 
             return services;
         }
