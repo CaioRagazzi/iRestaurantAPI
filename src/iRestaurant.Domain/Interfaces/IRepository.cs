@@ -15,5 +15,6 @@ namespace iRestaurant.Domain.Interfaces
         Task Delete(int id);
         Task Save();
         void RemoveCompletelly(T obj);
+        void RemoveCompletellyById(int id);
     }
 }

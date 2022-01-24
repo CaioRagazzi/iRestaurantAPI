@@ -29,6 +29,7 @@ namespace iRestaurant.Application.Services
         {
             var order = _mapper.Map<Order>(orderDtoRequest);
             order.RestaurantId = restaurantId;
+            order.OrderMenus = new List<OrderMenu>();
 
             _orderRepository.Insert(order);
             await _orderRepository.Save();
@@ -52,10 +53,11 @@ namespace iRestaurant.Application.Services
         public async Task Update(OrderDtoRequest orderDtoRequest, int orderId)
         {
             var order = await _orderRepository.GetById(orderId);
-
             order.Description = orderDtoRequest.Description;
 
-            order.OrderMenus.ToList().ForEach(orderMenu =>
+            var orderMenus = await _orderMenuRepository.GetByOrderId(orderId);
+
+            orderMenus.ToList().ForEach(orderMenu =>
             {
                 _orderMenuRepository.RemoveCompletelly(orderMenu);
             });

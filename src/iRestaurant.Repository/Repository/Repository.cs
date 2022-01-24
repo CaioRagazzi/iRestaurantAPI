@@ -51,6 +51,12 @@ namespace iRestaurant.Repository.Repository
             DbSet.Remove(obj);
         }
 
+        public void RemoveCompletellyById(int id)
+        {
+            T existing = DbSet.Find(id);
+            DbSet.Remove(existing);
+        }
+
         public async Task Save()
         {
             await _context.SaveChangesAsync();

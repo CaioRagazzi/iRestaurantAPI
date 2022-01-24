@@ -8,7 +8,6 @@ namespace iRestaurant.Application.Dto.OrderMenu
     {
         public string AdditionalComment { get; set; }
         public int Quantity { get; set; }
-        public int OrderId { get; set; }
         public int MenuId { get; set; }
     }
 }

@@ -24,7 +24,8 @@ namespace iRestaurant.Repository.Repository
         {
             var result = await _restaurantContext.Orders
                 .Where(r => r.RestaurantId == restaurantId)
-                .Include(r => r.OrderMenus).ThenInclude(r => r.Menu)
+                .Include(r => r.OrderMenus).ThenInclude(r => r.Menu).ThenInclude(r => r.Category)
+                .Include(r => r.OrderMenus).ThenInclude(r => r.Menu).ThenInclude(r => r.MenuIngredients)
                 .OrderBy(r => r.Id)
                 .GetPaged(page, pageSize);
 
